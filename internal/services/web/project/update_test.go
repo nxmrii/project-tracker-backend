@@ -3,6 +3,7 @@ package project
 import (
 	"context"
 	"testing"
+	"time"
 
 	"project-tracker-backend/internal/domain"
 	projectDTO "project-tracker-backend/internal/dtos/project"
@@ -13,10 +14,9 @@ func TestUpdateProjectSuccess(t *testing.T) {
 	repo := &fakeProjectRepository{
 		projects: []domain.Project{
 			{
-				ID:          1,
-				Name:        "Project Tracker",
-				Description: "Old description",
-				OwnerID:     1,
+				ID:       1,
+				Name:     "Project Tracker",
+				Deadline: time.Now().AddDate(0, 1, 0),
 			},
 		},
 	}
@@ -24,8 +24,7 @@ func TestUpdateProjectSuccess(t *testing.T) {
 	service := NewService(repo)
 
 	req := projectDTO.UpdateRequest{
-		Name:        "Project Management System",
-		Description: "Updated description",
+		Name: "Project Management System",
 	}
 
 	err := service.Update(
@@ -55,9 +54,9 @@ func TestUpdateProjectEmptyName(t *testing.T) {
 	repo := &fakeProjectRepository{
 		projects: []domain.Project{
 			{
-				ID:      1,
-				Name:    "Project Tracker",
-				OwnerID: 1,
+				ID:       1,
+				Name:     "Project Tracker",
+				Deadline: time.Now().AddDate(0, 1, 0),
 			},
 		},
 	}

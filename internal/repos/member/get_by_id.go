@@ -20,7 +20,6 @@ func (r *Repository) GetByID(
 			id,
 			project_id,
 			name,
-			email,
 			role,
 			created_at
 		FROM members

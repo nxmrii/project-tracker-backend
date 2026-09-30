@@ -10,6 +10,8 @@ import (
 	webRoutes "project-tracker-backend/internal/routes/web"
 	projectService "project-tracker-backend/internal/services/web/project"
 
+	"github.com/gofiber/fiber/v2/middleware/cors"
+
 	memberHandler "project-tracker-backend/internal/handlers/web/member"
 	memberRepo "project-tracker-backend/internal/repos/member"
 	memberService "project-tracker-backend/internal/services/web/member"
@@ -63,7 +65,11 @@ func main() {
 	)
 
 	server := fiber.New()
-
+	server.Use(cors.New(cors.Config{
+		AllowOrigins: "http://localhost:5173",
+		AllowHeaders: "Origin, Content-Type, Accept",
+		AllowMethods: "GET,POST,PATCH,DELETE,OPTIONS",
+	}))
 	memberSvc := memberService.NewService(
 		memberRepository,
 	)

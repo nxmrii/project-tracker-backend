@@ -34,7 +34,6 @@ func (s *Service) Update(
 	}
 
 	project.Name = name
-	project.Description = strings.TrimSpace(req.Description)
 
 	return s.repo.Update(ctx, project)
 }

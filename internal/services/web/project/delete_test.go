@@ -3,6 +3,7 @@ package project
 import (
 	"context"
 	"testing"
+	"time"
 
 	"project-tracker-backend/internal/domain"
 )
@@ -13,9 +14,9 @@ func TestDeleteProjectSuccess(t *testing.T) {
 	repo := &fakeProjectRepository{
 		projects: []domain.Project{
 			{
-				ID:      1,
-				Name:    "Project Tracker",
-				OwnerID: 1,
+				ID:       1,
+				Name:     "Project Tracker",
+				Deadline: time.Now().AddDate(0, 1, 0), // 1 month from now
 			},
 		},
 	}

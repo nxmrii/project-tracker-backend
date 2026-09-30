@@ -15,8 +15,8 @@ func (r *Repository) Update(
 		UPDATE tasks
 		SET
 			title = $1,
-			description = $2,
-			member_id = $3,
+			member_id = $2,
+			due_date = $3,
 			updated_at = CURRENT_TIMESTAMP
 		WHERE id = $4
 	`
@@ -25,8 +25,8 @@ func (r *Repository) Update(
 		ctx,
 		query,
 		task.Title,
-		task.Description,
 		task.MemberID,
+		task.DueDate,
 		task.ID,
 	)
 

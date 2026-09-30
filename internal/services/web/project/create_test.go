@@ -19,7 +19,6 @@ func (f *fakeProjectRepository) Delete(
 	ctx context.Context,
 	id int64,
 ) error {
-
 	f.deleteCalled = true
 
 	for i, project := range f.projects {
@@ -40,7 +39,6 @@ func (f *fakeProjectRepository) Update(
 	ctx context.Context,
 	project *domain.Project,
 ) error {
-
 	f.updateCalled = true
 
 	for i := range f.projects {
@@ -57,7 +55,6 @@ func (f *fakeProjectRepository) GetByID(
 	ctx context.Context,
 	id int64,
 ) (*domain.Project, error) {
-
 	for _, project := range f.projects {
 		if project.ID == id {
 			return &project, nil
@@ -90,9 +87,8 @@ func TestCreateProjectEmptyName(t *testing.T) {
 	service := NewService(repo)
 
 	req := projectDTO.CreateRequest{
-		Name:        "",
-		Description: "My backend project",
-		OwnerID:     1,
+		Name:     "",
+		Deadline: "2026-12-31",
 	}
 
 	result, err := service.Create(
@@ -113,15 +109,42 @@ func TestCreateProjectEmptyName(t *testing.T) {
 	}
 }
 
-func TestCreateProjectInvalidOwnerID(t *testing.T) {
+func TestCreateProjectEmptyDeadline(t *testing.T) {
 	repo := &fakeProjectRepository{}
 
 	service := NewService(repo)
 
 	req := projectDTO.CreateRequest{
-		Name:        "Project Tracker",
-		Description: "My backend project",
-		OwnerID:     0,
+		Name:     "Project Tracker",
+		Deadline: "",
+	}
+
+	result, err := service.Create(
+		context.Background(),
+		req,
+	)
+
+	if err == nil {
+		t.Fatal("expected an error, got nil")
+	}
+
+	if result != nil {
+		t.Fatal("expected result to be nil")
+	}
+
+	if repo.createCalled {
+		t.Fatal("repository should not be called")
+	}
+}
+
+func TestCreateProjectInvalidDeadline(t *testing.T) {
+	repo := &fakeProjectRepository{}
+
+	service := NewService(repo)
+
+	req := projectDTO.CreateRequest{
+		Name:     "Project Tracker",
+		Deadline: "not-a-date",
 	}
 
 	result, err := service.Create(
@@ -148,9 +171,8 @@ func TestCreateProjectSuccess(t *testing.T) {
 	service := NewService(repo)
 
 	req := projectDTO.CreateRequest{
-		Name:        "Project Tracker",
-		Description: "My backend project",
-		OwnerID:     1,
+		Name:     "Project Tracker",
+		Deadline: "2026-12-31",
 	}
 
 	result, err := service.Create(
@@ -159,11 +181,22 @@ func TestCreateProjectSuccess(t *testing.T) {
 	)
 
 	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
+		t.Fatalf(
+			"expected no error, got %v",
+			err,
+		)
 	}
 
 	if !repo.createCalled {
-		t.Fatal("expected repository Create to be called")
+		t.Fatal(
+			"expected repository Create to be called",
+		)
+	}
+
+	if result == nil {
+		t.Fatal(
+			"expected project result, got nil",
+		)
 	}
 
 	if result.Name != "Project Tracker" {
@@ -173,10 +206,20 @@ func TestCreateProjectSuccess(t *testing.T) {
 		)
 	}
 
-	if result.OwnerID != 1 {
+	if result.ID != 1 {
 		t.Errorf(
-			"expected owner id 1, got %d",
-			result.OwnerID,
+			"expected project id 1, got %d",
+			result.ID,
+		)
+	}
+
+	expectedDeadline := "2026-12-31"
+
+	if result.Deadline.Format("2006-01-02") != expectedDeadline {
+		t.Errorf(
+			"expected deadline %s, got %s",
+			expectedDeadline,
+			result.Deadline.Format("2006-01-02"),
 		)
 	}
 }

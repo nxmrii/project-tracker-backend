@@ -15,10 +15,9 @@ func (r *Repository) Create(
 		INSERT INTO members (
 			project_id,
 			name,
-			email,
 			role
 		)
-		VALUES ($1, $2, $3, $4)
+		VALUES ($1, $2, $3)
 		RETURNING id, created_at
 	`
 
@@ -27,7 +26,6 @@ func (r *Repository) Create(
 		query,
 		member.ProjectID,
 		member.Name,
-		member.Email,
 		member.Role,
 	).Scan(
 		&member.ID,

@@ -19,5 +19,5 @@ CREATE TABLE IF NOT EXISTS tasks (
         ON DELETE CASCADE,
 
     CONSTRAINT chk_tasks_status
-        CHECK (status IN ('todo', 'in_progress', 'done'))
+        CHECK (status IN ('todo', 'in-progress', 'done'))
 );

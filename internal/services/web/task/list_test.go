@@ -23,7 +23,7 @@ func TestListTasksByProjectIDSuccess(t *testing.T) {
 				ProjectID: 1,
 				MemberID:  1,
 				Title:     "Create Dashboard",
-				Status:    "in_progress",
+				Status:    "in-progress",
 			},
 			{
 				ID:        3,

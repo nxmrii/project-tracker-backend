@@ -17,14 +17,14 @@ func (r *Repository) GetByID(
 
 	query := `
 		SELECT
-			id,
-			project_id,
-			member_id,
-			title,
-			description,
-			status,
-			created_at,
-			updated_at
+			  id,
+    project_id,
+    member_id,
+    title,
+    status,
+    due_date,
+    created_at,
+    updated_at
 		FROM tasks
 		WHERE id = $1
 	`

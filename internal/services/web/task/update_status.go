@@ -22,7 +22,7 @@ func (s *Service) UpdateStatus(
 
 	validStatuses := map[string]bool{
 		"todo":        true,
-		"in_progress": true,
+		"in-progress": true,
 		"done":        true,
 	}
 

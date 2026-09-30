@@ -20,15 +20,10 @@ func (s *Service) Create(
 	}
 
 	name := strings.TrimSpace(req.Name)
-	email := strings.TrimSpace(req.Email)
 	role := strings.TrimSpace(req.Role)
 
 	if name == "" {
 		return nil, errors.New("member name is required")
-	}
-
-	if email == "" {
-		return nil, errors.New("member email is required")
 	}
 
 	if role == "" {
@@ -38,7 +33,6 @@ func (s *Service) Create(
 	newMember := &domain.Member{
 		ProjectID: projectID,
 		Name:      name,
-		Email:     email,
 		Role:      role,
 	}
 

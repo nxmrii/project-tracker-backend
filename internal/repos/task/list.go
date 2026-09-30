@@ -11,7 +11,7 @@ func (r *Repository) ListByProjectID(
 	projectID int64,
 ) ([]domain.Task, error) {
 
-	var tasks []domain.Task
+	tasks := make([]domain.Task, 0)
 
 	query := `
 		SELECT
@@ -19,8 +19,8 @@ func (r *Repository) ListByProjectID(
 			project_id,
 			member_id,
 			title,
-			description,
 			status,
+			due_date,
 			created_at,
 			updated_at
 		FROM tasks

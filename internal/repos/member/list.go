@@ -18,7 +18,6 @@ func (r *Repository) ListByProjectID(
 			id,
 			project_id,
 			name,
-			email,
 			role,
 			created_at
 		FROM members

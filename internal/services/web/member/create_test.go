@@ -109,9 +109,8 @@ func TestCreateMemberSuccess(t *testing.T) {
 	service := NewService(repo)
 
 	req := memberDTO.CreateRequest{
-		Name:  "Noor",
-		Email: "noor@example.com",
-		Role:  "Developer",
+		Name: "Noor",
+		Role: "Developer",
 	}
 
 	result, err := service.Create(
@@ -150,9 +149,8 @@ func TestCreateMemberInvalidProjectID(t *testing.T) {
 	service := NewService(repo)
 
 	req := memberDTO.CreateRequest{
-		Name:  "Noor",
-		Email: "noor@example.com",
-		Role:  "Developer",
+		Name: "Noor",
+		Role: "Developer",
 	}
 
 	result, err := service.Create(

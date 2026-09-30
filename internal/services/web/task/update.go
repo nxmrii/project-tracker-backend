@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"strings"
+	"time"
 
 	taskDTO "project-tracker-backend/internal/dtos/task"
 )
@@ -28,6 +29,19 @@ func (s *Service) Update(
 		return errors.New("invalid member id")
 	}
 
+	if strings.TrimSpace(req.DueDate) == "" {
+		return errors.New("due date is required")
+	}
+
+	dueDate, err := time.Parse(
+		"2006-01-02",
+		req.DueDate,
+	)
+
+	if err != nil {
+		return errors.New("invalid due date format")
+	}
+
 	task, err := s.repo.GetByID(ctx, id)
 	if err != nil {
 		return err
@@ -38,8 +52,8 @@ func (s *Service) Update(
 	}
 
 	task.Title = title
-	task.Description = strings.TrimSpace(req.Description)
 	task.MemberID = req.MemberID
+	task.DueDate = dueDate
 
 	if err := s.repo.Update(ctx, task); err != nil {
 		return err

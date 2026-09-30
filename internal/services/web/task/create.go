@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"strings"
+	"time"
 
 	"project-tracker-backend/internal/domain"
 	taskDTO "project-tracker-backend/internal/dtos/task"
@@ -29,28 +30,33 @@ func (s *Service) Create(
 		return nil, errors.New("task title is required")
 	}
 
-	status := strings.TrimSpace(req.Status)
-
-	if status == "" {
-		status = "todo"
+	if strings.TrimSpace(req.DueDate) == "" {
+		return nil, errors.New("due date is required")
 	}
 
-	if status != "todo" &&
-		status != "in_progress" &&
-		status != "done" {
+	dueDate, err := time.Parse(
+		"2006-01-02",
+		req.DueDate,
+	)
 
-		return nil, errors.New("invalid task status")
+	if err != nil {
+		return nil, errors.New(
+			"invalid due date format",
+		)
 	}
 
 	newTask := &domain.Task{
-		ProjectID:   projectID,
-		MemberID:    req.MemberID,
-		Title:       title,
-		Description: strings.TrimSpace(req.Description),
-		Status:      status,
+		ProjectID: projectID,
+		MemberID:  req.MemberID,
+		Title:     title,
+		Status:    "todo",
+		DueDate:   dueDate,
 	}
 
-	if err := s.repo.Create(ctx, newTask); err != nil {
+	if err := s.repo.Create(
+		ctx,
+		newTask,
+	); err != nil {
 		return nil, err
 	}
 

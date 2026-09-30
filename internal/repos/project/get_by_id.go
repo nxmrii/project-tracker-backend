@@ -17,8 +17,7 @@ func (r *Repository) GetByID(
 		SELECT
 			id,
 			name,
-			description,
-			owner_id,
+			deadline,
 			created_at,
 			updated_at
 		FROM projects

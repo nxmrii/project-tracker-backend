@@ -15,16 +15,14 @@ func (r *Repository) Update(
 		UPDATE members
 		SET
 			name = $1,
-			email = $2,
-			role = $3
-		WHERE id = $4
+			role = $2,
+		WHERE id = $3
 	`
 
 	_, err := r.db.ExecContext(
 		ctx,
 		query,
 		member.Name,
-		member.Email,
 		member.Role,
 		member.ID,
 	)

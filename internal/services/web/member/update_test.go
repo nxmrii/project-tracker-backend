@@ -16,7 +16,6 @@ func TestUpdateMemberSuccess(t *testing.T) {
 				ID:        1,
 				ProjectID: 1,
 				Name:      "Noor",
-				Email:     "noor@example.com",
 				Role:      "Developer",
 			},
 		},
@@ -25,9 +24,8 @@ func TestUpdateMemberSuccess(t *testing.T) {
 	service := NewService(repo)
 
 	req := memberDTO.UpdateRequest{
-		Name:  "Noor Al Amri",
-		Email: "noor@example.com",
-		Role:  "Team Lead",
+		Name: "Noor Al Amri",
+		Role: "Team Lead",
 	}
 
 	err := service.Update(

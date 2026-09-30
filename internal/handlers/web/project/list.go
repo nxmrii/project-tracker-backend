@@ -1,6 +1,10 @@
 package project
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"log"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 func (h *Handler) List(c *fiber.Ctx) error {
 
@@ -9,6 +13,8 @@ func (h *Handler) List(c *fiber.Ctx) error {
 	)
 
 	if err != nil {
+
+		log.Printf("LIST PROJECTS ERROR: %v", err)
 		return c.Status(
 			fiber.StatusInternalServerError,
 		).JSON(fiber.Map{

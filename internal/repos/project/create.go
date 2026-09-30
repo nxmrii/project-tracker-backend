@@ -14,10 +14,9 @@ func (r *Repository) Create(
 	query := `
 		INSERT INTO projects (
 			name,
-			description,
-			owner_id
+			deadline
 		)
-		VALUES ($1, $2, $3)
+		VALUES ($1, $2)
 		RETURNING id, created_at, updated_at
 	`
 
@@ -25,8 +24,7 @@ func (r *Repository) Create(
 		ctx,
 		query,
 		project.Name,
-		project.Description,
-		project.OwnerID,
+		project.Deadline,
 	).Scan(
 		&project.ID,
 		&project.CreatedAt,

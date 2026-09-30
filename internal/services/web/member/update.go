@@ -19,15 +19,10 @@ func (s *Service) Update(
 	}
 
 	name := strings.TrimSpace(req.Name)
-	email := strings.TrimSpace(req.Email)
 	role := strings.TrimSpace(req.Role)
 
 	if name == "" {
 		return errors.New("member name is required")
-	}
-
-	if email == "" {
-		return errors.New("member email is required")
 	}
 
 	if role == "" {
@@ -44,7 +39,6 @@ func (s *Service) Update(
 	}
 
 	member.Name = name
-	member.Email = email
 	member.Role = role
 
 	return s.repo.Update(ctx, member)

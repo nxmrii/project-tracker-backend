@@ -15,7 +15,7 @@ func (r *Repository) Update(
 		UPDATE projects
 		SET
 			name = $1,
-			description = $2,
+			deadline = $2,
 			updated_at = CURRENT_TIMESTAMP
 		WHERE id = $3
 		RETURNING updated_at
@@ -25,7 +25,7 @@ func (r *Repository) Update(
 		ctx,
 		query,
 		project.Name,
-		project.Description,
+		project.Deadline,
 		project.ID,
 	).Scan(
 		&project.UpdatedAt,

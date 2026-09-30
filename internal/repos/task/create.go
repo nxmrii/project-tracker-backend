@@ -16,8 +16,8 @@ func (r *Repository) Create(
 			project_id,
 			member_id,
 			title,
-			description,
-			status
+			status,
+			due_date
 		)
 		VALUES ($1, $2, $3, $4, $5)
 		RETURNING
@@ -32,8 +32,8 @@ func (r *Repository) Create(
 		task.ProjectID,
 		task.MemberID,
 		task.Title,
-		task.Description,
 		task.Status,
+		task.DueDate,
 	).Scan(
 		&task.ID,
 		&task.CreatedAt,

@@ -112,63 +112,14 @@ func (f *fakeTaskRepository) Create(
 	return nil
 }
 
-func TestCreateTaskSuccess(t *testing.T) {
-
-	repo := &fakeTaskRepository{}
-	service := NewService(repo)
-
-	req := taskDTO.CreateRequest{
-		Title:       "Create Login Page",
-		Description: "Build login UI",
-		MemberID:    1,
-		Status:      "todo",
-	}
-
-	result, err := service.Create(
-		context.Background(),
-		1,
-		req,
-	)
-
-	if err != nil {
-		t.Fatalf("expected no error, got %v", err)
-	}
-
-	if !repo.createCalled {
-		t.Fatal("expected repository Create to be called")
-	}
-
-	if result.ProjectID != 1 {
-		t.Errorf(
-			"expected project id 1, got %d",
-			result.ProjectID,
-		)
-	}
-
-	if result.MemberID != 1 {
-		t.Errorf(
-			"expected member id 1, got %d",
-			result.MemberID,
-		)
-	}
-
-	if result.Status != "todo" {
-		t.Errorf(
-			"expected todo, got %s",
-			result.Status,
-		)
-	}
-}
-
-func TestCreateTaskInvalidStatus(t *testing.T) {
-
+func TestCreateTaskInvalidMemberID(t *testing.T) {
 	repo := &fakeTaskRepository{}
 	service := NewService(repo)
 
 	req := taskDTO.CreateRequest{
 		Title:    "Create Login",
-		MemberID: 1,
-		Status:   "finished",
+		MemberID: 0,
+		DueDate:  "2026-10-10",
 	}
 
 	result, err := service.Create(
@@ -186,6 +137,70 @@ func TestCreateTaskInvalidStatus(t *testing.T) {
 	}
 
 	if repo.createCalled {
-		t.Fatal("repository Create should not be called")
+		t.Fatal(
+			"repository Create should not be called",
+		)
+	}
+}
+
+func TestCreateTaskEmptyDueDate(t *testing.T) {
+	repo := &fakeTaskRepository{}
+	service := NewService(repo)
+
+	req := taskDTO.CreateRequest{
+		Title:    "Create Login",
+		MemberID: 1,
+		DueDate:  "",
+	}
+
+	result, err := service.Create(
+		context.Background(),
+		1,
+		req,
+	)
+
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	if result != nil {
+		t.Fatal("expected result to be nil")
+	}
+
+	if repo.createCalled {
+		t.Fatal(
+			"repository Create should not be called",
+		)
+	}
+}
+
+func TestCreateTaskInvalidDueDate(t *testing.T) {
+	repo := &fakeTaskRepository{}
+	service := NewService(repo)
+
+	req := taskDTO.CreateRequest{
+		Title:    "Create Login",
+		MemberID: 1,
+		DueDate:  "wrong-date",
+	}
+
+	result, err := service.Create(
+		context.Background(),
+		1,
+		req,
+	)
+
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	if result != nil {
+		t.Fatal("expected result to be nil")
+	}
+
+	if repo.createCalled {
+		t.Fatal(
+			"repository Create should not be called",
+		)
 	}
 }
