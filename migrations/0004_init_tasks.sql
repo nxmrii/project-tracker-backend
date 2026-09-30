@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS tasks (
     project_id BIGINT NOT NULL,
     member_id BIGINT NOT NULL,
     title VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL DEFAULT '',
     status VARCHAR(50) NOT NULL DEFAULT 'todo',
+    due_date DATE NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -19,5 +19,11 @@ CREATE TABLE IF NOT EXISTS tasks (
         ON DELETE CASCADE,
 
     CONSTRAINT chk_tasks_status
-        CHECK (status IN ('todo', 'in-progress', 'done'))
+        CHECK (
+            status IN (
+                'todo',
+                'in-progress',
+                'done'
+            )
+        )
 );
